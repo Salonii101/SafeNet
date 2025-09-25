@@ -1,15 +1,17 @@
-const mongoose = require('mongoose');
+
+import mongoose from "mongoose";
 
 const fileSchema = new mongoose.Schema({
-  filename: { type: String, required: true },         // original file name
-  storedName: { type: String, required: true },       // encrypted/random name on disk
-  size: { type: Number, required: true },             // in bytes
-  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // uploader
-  path: { type: String, required: true },             // local or cloud storage path
-  mimeType: { type: String, required: true },         // e.g. image/png, application/pdf
+  filename: { type: String, required: true },         
+  storedName: { type: String, required: true },       
+  size: { type: Number, required: true },             
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, 
+  path: { type: String, required: true },             
+  mimeType: { type: String, required: true },         
   isEncrypted: { type: Boolean, default: false },
-  expiryDate: { type: Date },                         // optional: auto delete
+  expiryDate: { type: Date },                         
   createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('File', fileSchema);
+
+export default mongoose.model("File", fileSchema);

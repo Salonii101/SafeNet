@@ -1,10 +1,10 @@
-// config/aws.js
-require("dotenv").config();
-const { S3Client } = require("@aws-sdk/client-s3");
+import dotenv from "dotenv";
+import { S3Client } from "@aws-sdk/client-s3";
 
-require('dotenv').config() ;
+// Load environment variables
+dotenv.config();
 
-console.log(process.env.AWS_REGION) ;
+console.log(process.env.AWS_REGION);
 
 // Create an S3 client
 const s3 = new S3Client({
@@ -15,4 +15,4 @@ const s3 = new S3Client({
   },
 });
 
-module.exports = s3;
+export default s3;

@@ -1,48 +1,45 @@
-const crypto = require("crypto");
-const fs = require("fs");
+
+import crypto from "crypto";
+import fs from "fs";
 
 const algorithm = "aes-256-gcm";
-const iterations = 100000; 
-const keyLength = 32; 
-const ivLength = 12; 
+const iterations = 100000;
+const keyLength = 32;
+const ivLength = 12;
 
 function deriveKey(password, salt) {
   return crypto.pbkdf2Sync(password, salt, iterations, keyLength, "sha256");
 }
 
-function encryptFile(filePath, password) {
+export function encryptFile(filePath, password) {
   try {
-    const salt = crypto.randomBytes(16); 
+    const salt = crypto.randomBytes(16);
     const iv = crypto.randomBytes(ivLength);
-
     const key = deriveKey(password, salt);
 
     const cipher = crypto.createCipheriv(algorithm, key, iv);
-
     const fileData = fs.readFileSync(filePath);
+
     const encryptedData = Buffer.concat([
       cipher.update(fileData),
       cipher.final(),
     ]);
 
-    const authTag = cipher.getAuthTag(); // integrity tag
+    const authTag = cipher.getAuthTag();
 
-  
     const output = Buffer.concat([salt, iv, authTag, encryptedData]);
-
     fs.writeFileSync(filePath + ".enc", output);
 
-    console.log("✅ File encrypted successfully");
+    console.log("File encrypted successfully");
   } catch (err) {
-    console.error("❌ Encryption failed:", err.message);
+    console.error("Encryption failed:", err.message);
   }
 }
 
-function decryptFile(filePath, password) {
+export function decryptFile(filePath, password) {
   try {
     const fileData = fs.readFileSync(filePath);
 
-    // Extract parts
     const salt = fileData.slice(0, 16);
     const iv = fileData.slice(16, 28);
     const authTag = fileData.slice(28, 44);
@@ -61,12 +58,8 @@ function decryptFile(filePath, password) {
     const outPath = filePath.replace(".enc", ".dec");
     fs.writeFileSync(outPath, decryptedData);
 
-    console.log("✅ File decrypted successfully ->", outPath);
+    console.log("File decrypted successfully ->", outPath);
   } catch (err) {
-    console.error("❌ Decryption failed:", err.message);
+    console.error("Decryption failed:", err.message);
   }
 }
-
-
-
-module.exports = { encryptFile , decryptFile } ;

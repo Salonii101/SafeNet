@@ -1,5 +1,5 @@
-const fs = require("fs");
-const { encryptFile, decryptFile } = require("./encrypt.util.js"); // your encryption module
+import fs from "fs";
+import { encryptFile, decryptFile } from "./encrypt.util.js"; 
 
 const password = "SuperSecret123!";
 
@@ -20,8 +20,7 @@ const originalData = fs.readFileSync(originalFile, "utf-8");
 const decryptedData = fs.readFileSync(decryptedFile, "utf-8");
 
 if (originalData === decryptedData) {
-  console.log("✅ Test Passed: Decrypted file matches the original");
+  console.log("Test Passed: Decrypted file matches the original");
 } else {
-  console.log("❌ Test Failed: Decrypted file does NOT match the original");
+  console.log("Test Failed: Decrypted file does NOT match the original");
 }
-
