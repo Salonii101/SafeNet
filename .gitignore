@@ -15,3 +15,5 @@ Thumbs.db
 
 # Optional: coverage reports
 coverage/
+node_modules/
+.env
